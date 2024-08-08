@@ -1,12 +1,25 @@
 import logo from '../assets/icon.svg'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
+import { createRoom } from '../http/create-room'
+import { toast } from 'sonner'
 
 export function CreateRoom() {
     const navigate = useNavigate()
 
-    function handleCreateRoom() {
-        navigate('/room/example')
+    async function handleCreateRoom(data: FormData) {
+        const theme = data.get('theme')?.toString()
+
+        if (!theme) {
+            return
+        }
+
+        try {
+            const {id} = await createRoom({theme})
+            navigate(`/room/${id}`)
+        } catch {
+            toast.error("Falha ao criar sala.")
+        }
     }
 
     return (
@@ -18,7 +31,7 @@ export function CreateRoom() {
                 </p>
 
                 <form
-                    onSubmit={handleCreateRoom}
+                    action={handleCreateRoom}
                     className='flex items-center gap-2 bg-zinc-900 p-2 rounded-xl border border-zinc-800 ring-orange-400 ring-offset-2 ring-offset-zinc-950 focus-within:ring-1'
                 >
                     <input
