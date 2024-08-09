@@ -2,6 +2,15 @@ interface GetRoomMessagesRequest {
     roomId: string
 }
 
+export interface GetRoomMessagesResponse {
+    messages: {
+        id: string,
+        text: string,
+        reactionsAmount: number,
+        answered: boolean
+    }[]
+}
+
 const apiUrl = import.meta.env.VITE_APP_API_URL
 
 export async function getRoomMessages({roomId}: GetRoomMessagesRequest) {
@@ -22,5 +31,5 @@ export async function getRoomMessages({roomId}: GetRoomMessagesRequest) {
             reactionsAmount: item.reaction_count,
             answered: item.answered
         }))
-    }
+    } as GetRoomMessagesResponse
 }
