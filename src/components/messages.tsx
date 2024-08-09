@@ -1,11 +1,10 @@
 import { useParams } from "react-router-dom";
 import { Message } from "./message";
-import { getRoomMessages, GetRoomMessagesResponse } from "../http/get-room-messages";
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { getRoomMessages } from "../http/get-room-messages";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useRoomWebSocket } from "../hooks/use-room-web-socket";
 
 export function Messages() {
-    const queryClient = useQueryClient()
     const { id } = useParams()
 
     if (!id) {
@@ -17,55 +16,7 @@ export function Messages() {
         queryKey: ['messages', id]
     })
 
-    useEffect(() => {
-        const ws = new WebSocket(`ws://localhost:8080/subscribe/${id}`)
-        ws.onopen = () => console.log('Websocket connected')
-        ws.onclose = () => console.log('Websocket connection closed')
-        ws.onmessage = (event) => {
-            const data: {
-                kind: 'message_created' | 'message_answered' | 'message_reaction_increased' | 'message_reaction_decreased',
-                value: any
-            } = JSON.parse(event.data)
-
-            switch(data.kind) {
-                case 'message_created':
-                    queryClient.setQueryData<GetRoomMessagesResponse>(['messages', id], (state) => ({
-                        messages: [data.value, ...(state?.messages ?? [])]
-                    }))
-                    break
-                case 'message_answered':
-                    queryClient.setQueryData<GetRoomMessagesResponse>(['messages', id], (state) => {
-                        if (!state) { return undefined }
-                        return {
-                            messages: state.messages.map(item => {
-                                if (item.id === data.value.id) {
-                                    return {...item, answered: true}
-                                }
-                                return item
-                            })
-                        }
-                    })
-                    break
-                case 'message_reaction_increased':
-                case 'message_reaction_decreased':
-                    queryClient.setQueryData<GetRoomMessagesResponse>(['messages', id], (state) => {
-                        if (!state) { return undefined }
-                        return {
-                            messages: state.messages.map(item => {
-                                if (item.id === data.value.id) {
-                                    return {...item, reactionsAmount: data.value.count}
-                                }
-                                return item
-                            })
-                        }
-                    })
-                    break
-            }
-        }
-        return () => {
-            ws.close()
-        }
-    }, [id])
+    useRoomWebSocket({roomId: id})
 
     return (
         <ol className='list-decimal list-outside px-3 space-y-8'>
