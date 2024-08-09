@@ -1,0 +1,15 @@
+.room {
+    @apply mx-auto max-w-[640px] flex flex-col gap-6 py-10 px-2
+}
+
+header {
+    @apply flex items-center gap-3 px-3
+}
+
+span.room-id {
+    @apply text-sm text-zinc-500 truncate
+}
+
+header button[type="submit"] {
+    @apply bg-zinc-800 text-zinc-300 px-3 py-1.5 gap-1.5 flex items-center rounded-lg font-medium text-sm transition-colors hover:bg-zinc-700
+}

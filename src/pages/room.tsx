@@ -1,3 +1,4 @@
+import "./room.css"
 import logo from '../assets/icon.svg'
 import { Share2 } from 'lucide-react'
 import { useParams } from "react-router-dom"
@@ -20,20 +21,17 @@ export function Room() {
     }
 
     return (
-        <div className="mx-auto max-w-[640px] flex flex-col gap-6 py-10 px-2">
-            <div className="flex items-center gap-3 px-3">
-                <img src={logo} alt="AMA" className='h-5' />
-                <span className='text-sm text-zinc-500 truncate'>
+        <div className="room">
+            <header>
+                <img src={logo} alt="AMA" className='h-5'/>
+                <span className='room-id'>
                     Código da sala: <span className='text-zinc-300'>{id}</span>
                 </span>
-                <button
-                    type='submit' onClick={handleShareRoom}
-                    className='bg-zinc-800 text-zinc-300 px-3 py-1.5 gap-1.5 flex items-center rounded-lg font-medium text-sm transition-colors hover:bg-zinc-700'
-                >
+                <button type='submit' onClick={handleShareRoom}>
                     Compartilhar
                     <Share2 className='size-4'/>
                 </button>
-            </div>
+            </header>
 
             <div className="h-px w-full bg-zinc-900"/>
 

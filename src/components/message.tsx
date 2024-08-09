@@ -1,3 +1,4 @@
+import "./message.css"
 import { ArrowUp } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -43,16 +44,13 @@ export function Message({id, text, reactionsAmount, answered = false}: MessagePr
     }
 
     return (
-        <li
-            data-answered={answered}
-            className='ml-4 leading-relaxed text-zinc-100 data-[answered=true]:opacity-50 data-[answered=true]:pointer-events-none'
-        >
+        <li data-answered={answered}>
             {text}
             {hasReacted? (
                 <button
                     type="button"
                     onClick={removeMessageReactionAction}
-                    className='mt-3 flex items-center gap-2 text-orange-400 text-sm font-medium hover:text-orange-500'
+                    className='remove-reaction'
                 >
                     <ArrowUp className='size-4'/>
                     Curtir pergunta ({reactionsAmount})
@@ -61,7 +59,7 @@ export function Message({id, text, reactionsAmount, answered = false}: MessagePr
                 <button
                     type="button"
                     onClick={createMessageReactionAction}
-                    className='mt-3 flex items-center gap-2 text-zinc-400 text-sm font-medium hover:text-zinc-300'
+                    className='add-reaction'
                 >
                     <ArrowUp className='size-4'/>
                     Curtir pergunta ({reactionsAmount})

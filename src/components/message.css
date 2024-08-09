@@ -1,0 +1,15 @@
+li {
+    @apply ml-4 leading-relaxed text-zinc-100 data-[answered=true]:opacity-50 data-[answered=true]:pointer-events-none
+}
+
+button.add-reaction, button.remove-reaction {
+    @apply mt-3 flex items-center gap-2 text-sm font-medium
+}
+
+button.add-reaction {
+    @apply text-zinc-400 hover:text-zinc-300
+}
+
+button.remove-reaction {
+    @apply text-orange-400 hover:text-orange-500
+}
