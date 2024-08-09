@@ -2,7 +2,8 @@ import logo from '../assets/icon.svg'
 import { ArrowRight, Share2 } from 'lucide-react'
 import { useParams } from "react-router-dom"
 import { toast } from 'sonner'
-import { Message } from '../components/message'
+import { Messages } from '../components/messages'
+import { Suspense } from 'react'
 
 export function Room() {
     const { id } = useParams()
@@ -51,11 +52,9 @@ export function Room() {
                 </button>
             </form>
 
-            <ol className='list-decimal list-outside px-3 space-y-8'>
-                <Message text='Pergunta 1' reactionsAmount={1205}/>
-                <Message text='Pergunta 2' reactionsAmount={255} answered/>
-                <Message text='Pergunta 3' reactionsAmount={99}/>
-            </ol>
+            <Suspense fallback={<p>Carregando...</p>}>
+                <Messages/>
+            </Suspense>
         </div>
     )
 }
