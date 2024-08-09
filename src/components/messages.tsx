@@ -18,9 +18,11 @@ export function Messages() {
 
     useRoomWebSocket({roomId: id})
 
+    const sortedMessages = data.messages.sort((a, b) => b.reactionsAmount - a.reactionsAmount)
+
     return (
         <ol className='list-decimal list-outside px-3 space-y-8'>
-            {data.messages.map(message => (
+            {sortedMessages.map(message => (
                 <Message {...message} key={message.id} />
             ))}
         </ol>
